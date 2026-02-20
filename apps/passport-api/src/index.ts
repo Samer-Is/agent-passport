@@ -62,7 +62,7 @@ async function start() {
     const server = await bootstrap();
     await server.listen({ port: config.port, host: '0.0.0.0' });
     console.log(`🚀 Agent Passport API running on port ${config.port}`);
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('Failed to start server:', err);
     process.exit(1);
   }

@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Generate Prisma client
+        run: pnpm -C apps/passport-api exec prisma generate
+
       - name: Build shared package first
         run: pnpm -C packages/shared build
 
@@ -63,6 +66,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm -C apps/passport-api exec prisma generate
 
       - name: Build shared package
         run: pnpm -C packages/shared build

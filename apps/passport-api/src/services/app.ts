@@ -74,7 +74,7 @@ export async function registerApp(params: RegisterAppParams): Promise<RegisterAp
   const keyHash = await hashAppKey(fullKey);
 
   // Create app and key in a transaction
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: Parameters<Parameters<typeof prisma.$transaction>[0]>[0]) => {
     const app = await tx.app.create({
       data: {
         name,
@@ -346,7 +346,7 @@ export async function rotateAppKey(appId: string, portalUserId: string) {
   const keyHash = await hashAppKey(fullKey);
 
   // Revoke old keys and create new one
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: Parameters<Parameters<typeof prisma.$transaction>[0]>[0]) => {
     // Mark all existing active keys as revoked
     await tx.appKey.updateMany({
       where: { appId, status: 'active' },

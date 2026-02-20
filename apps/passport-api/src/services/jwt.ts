@@ -112,7 +112,7 @@ export async function verifyIdentityToken(
     };
     
     return { valid: true, payload: claims };
-  } catch (err) {
+  } catch (err: unknown) {
     const error = err as Error;
     
     if (error.message.includes('expired')) {

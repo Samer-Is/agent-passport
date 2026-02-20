@@ -38,7 +38,7 @@ export function logAuditEvent(params: AuditLogParams): void {
         metadata: fullMetadata as Prisma.InputJsonValue,
       },
     })
-    .catch((err) => {
+    .catch((err: unknown) => {
       console.error('Failed to log audit event:', err);
     });
 }

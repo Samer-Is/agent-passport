@@ -14,7 +14,7 @@ export const healthRoutes: FastifyPluginAsync = async (fastify) => {
     try {
       await prisma.$queryRaw`SELECT 1`;
       checks.database = true;
-    } catch (err) {
+    } catch (err: unknown) {
       fastify.log.error({ err }, 'Database health check failed');
     }
 
@@ -22,7 +22,7 @@ export const healthRoutes: FastifyPluginAsync = async (fastify) => {
     try {
       await redis.ping();
       checks.redis = true;
-    } catch (err) {
+    } catch (err: unknown) {
       fastify.log.error({ err }, 'Redis health check failed');
     }
 

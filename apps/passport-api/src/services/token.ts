@@ -73,7 +73,7 @@ export async function verifyToken(
             reason: 'token_revoked',
           };
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.warn('Failed to check revocation blocklist:', err);
         // Graceful degradation — skip revocation check if Redis is down
       }
@@ -268,7 +268,7 @@ export async function revokeToken(
   if (isRedisAvailable()) {
     try {
       await redis.set(RedisKeys.revoked(jti), '1', 'EX', ttlSeconds);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Failed to add token to revocation blocklist:', err);
       return { revoked: false, jti, reason: 'redis_unavailable' };
     }
