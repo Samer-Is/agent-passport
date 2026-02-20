@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
+    "vercel-build": "cd ../.. && pnpm -C packages/shared build && cd apps/passport-portal && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
