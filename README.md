@@ -7,6 +7,8 @@
 
 **Sign in with Google, but for AI Agents.**
 
+🔴 **Live now** — [API](https://agent-passport.onrender.com/healthz) · [Portal](https://agent-passport.vercel.app) · [npm](https://www.npmjs.com/package/@zerobase-labs/passport-sdk)
+
 Agent Passport is an open-source identity verification layer for AI agents.
 It lets agents prove who they are and lets apps verify they're talking to the real agent — not an impersonator, not a malicious clone, not spam.
 
@@ -193,8 +195,10 @@ pnpm dev
 
 ## Examples
 
-- [OpenClaw Integration](./examples/openclaw-integration/) — Secure an agent skill marketplace with verified identities
-- [Express Middleware](./examples/openclaw-integration/app-side/verify-middleware.ts) — Drop-in verification middleware for Express apps
+- [OpenClaw Integration](./examples/openclaw-integration/) — Full end-to-end demo securing an agent skill marketplace
+- [OpenClaw Plugin](./examples/openclaw-plugin/) — Drop-in npm package with Express + Fastify middleware
+- [Express Middleware](./examples/openclaw-integration/app-side/verify-middleware.ts) — Standalone verification middleware
+- [E2E Demo Script](./examples/openclaw-integration/e2e-demo/demo.ts) — Run the entire flow in one command
 
 ## Security
 
@@ -223,6 +227,7 @@ MIT License — see [LICENSE](./LICENSE) for details.
 </p>
 
 <p align="center">
+  <a href="https://agent-passport.vercel.app">Portal</a> •
   <a href="./docs/INTEGRATION.md">Integration Guide</a> •
   <a href="./docs/openapi.yaml">API Reference</a> •
   <a href="./docs/SECURITY.md">Security</a> •
