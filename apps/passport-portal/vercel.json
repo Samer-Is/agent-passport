@@ -1,0 +1,5 @@
+{
+  "installCommand": "cd ../.. && pnpm install",
+  "buildCommand": "cd ../.. && pnpm -C packages/shared build && cd apps/passport-portal && next build",
+  "framework": "nextjs"
+}
