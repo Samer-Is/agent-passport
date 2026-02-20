@@ -53,3 +53,5 @@ chunk*.md
 CODEBASE_DOCUMENTATION.md
 NEXT_STEPS.md
 urls and tokens
+.vercel
+.env*.local

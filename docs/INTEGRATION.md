@@ -28,7 +28,7 @@ Agent Passport allows app builders to verify that an AI agent is who they claim 
 
 ### 1. Create an App (Portal)
 
-1. Visit [Agent Passport Portal](https://passport-portal.vercel.app)
+1. Visit [Agent Passport Portal](https://agent-passport.vercel.app)
 2. Sign in with your admin account
 3. Create a new app
 4. Generate an API key (copy it — it's shown only once!)
@@ -39,7 +39,7 @@ When an agent presents an identity token to your app, verify it:
 
 ```typescript
 // TypeScript/Node.js
-const response = await fetch('https://passport-api.onrender.com/tokens/verify', {
+const response = await fetch('https://agent-passport.onrender.com/tokens/verify', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const publicKey = await ed25519.getPublicKey(privateKey);
 const publicKeyB64 = Buffer.from(publicKey).toString('base64');
 
 // 2. Register with Agent Passport
-const registerResponse = await fetch('https://passport-api.onrender.com/agents/register', {
+const registerResponse = await fetch('https://agent-passport.onrender.com/agents/register', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -131,7 +131,7 @@ const { agentId } = await registerResponse.json();
 
 // 3. Request challenge
 const challengeResponse = await fetch(
-  `https://passport-api.onrender.com/agents/${agentId}/challenge`,
+  `https://agent-passport.onrender.com/agents/${agentId}/challenge`,
   { method: 'POST' }
 );
 const { nonce } = await challengeResponse.json();
@@ -143,7 +143,7 @@ const signatureB64 = Buffer.from(signature).toString('base64');
 
 // 5. Exchange for token
 const tokenResponse = await fetch(
-  `https://passport-api.onrender.com/agents/${agentId}/identity-token`,
+  `https://agent-passport.onrender.com/agents/${agentId}/identity-token`,
   {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -161,7 +161,7 @@ const { token, expiresAt } = await tokenResponse.json();
 ```typescript
 // Verify tokens on every agent request
 async function verifyAgentToken(token: string) {
-  const response = await fetch('https://passport-api.onrender.com/tokens/verify', {
+  const response = await fetch('https://agent-passport.onrender.com/tokens/verify', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ If a token is compromised or an agent session should be terminated early, revoke
 
 ```typescript
 async function revokeAgentToken(token: string) {
-  const response = await fetch('https://passport-api.onrender.com/tokens/revoke', {
+  const response = await fetch('https://agent-passport.onrender.com/tokens/revoke', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -233,7 +233,7 @@ async function revokeAgentToken(token: string) {
 import { AgentPassportClient } from '@zerobase-labs/passport-sdk';
 
 const client = new AgentPassportClient({
-  baseUrl: 'https://passport-api.onrender.com',
+  baseUrl: 'https://agent-passport.onrender.com',
   appId: process.env.PASSPORT_APP_ID!,
   appKey: process.env.PASSPORT_APP_KEY!,
 });
@@ -253,7 +253,7 @@ import * as jose from 'jose';
 
 // Fetch JWKS once (cache it)
 const JWKS = jose.createRemoteJWKSet(
-  new URL('https://passport-api.onrender.com/.well-known/jwks.json')
+  new URL('https://agent-passport.onrender.com/.well-known/jwks.json')
 );
 
 async function verifyTokenLocally(token: string) {

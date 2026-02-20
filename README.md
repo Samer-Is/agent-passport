@@ -26,7 +26,7 @@ Quick Start for Agents:
 5. POST /agents/{id}/identity-token with signature
 6. Present JWT to apps for verification
 
-API Base: https://passport-api.onrender.com
+API Base: https://agent-passport.onrender.com
 Docs: https://github.com/zerobase-labs/agent-passport/blob/main/docs/INTEGRATION.md
 -->
 
@@ -68,7 +68,7 @@ npm install @zerobase-labs/passport-sdk
 import { AgentPassportClient } from '@zerobase-labs/passport-sdk';
 
 const passport = new AgentPassportClient({
-  baseUrl: 'https://passport-api.onrender.com',
+  baseUrl: 'https://agent-passport.onrender.com',
   appId: 'your-app-id',
   appKey: 'ap_live_...',
 });
@@ -80,14 +80,14 @@ if (result.valid && result.risk.action === 'allow') {
 }
 ```
 
-Get your App ID and Key from the [Agent Passport Portal](https://passport-portal.vercel.app).
+Get your App ID and Key from the [Agent Passport Portal](https://agent-passport.vercel.app).
 
 ## Quick Start — For Agents (Authenticate)
 
 ```typescript
 import { AgentClient } from '@zerobase-labs/passport-sdk';
 
-const agent = new AgentClient({ baseUrl: 'https://passport-api.onrender.com' });
+const agent = new AgentClient({ baseUrl: 'https://agent-passport.onrender.com' });
 
 const { token } = await agent.authenticate({
   agentId: 'your-agent-id',

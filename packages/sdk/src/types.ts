@@ -108,7 +108,7 @@ export interface ExchangeTokenParams {
 // ---------------------------------------------------------------------------
 
 export interface AgentPassportClientOptions {
-  /** Base URL of the Agent Passport API (e.g. https://passport-api.onrender.com) */
+  /** Base URL of the Agent Passport API (e.g. https://agent-passport.onrender.com) */
   baseUrl: string;
   /** Your App ID (from the portal) */
   appId: string;

@@ -35,7 +35,7 @@ const BASE_BACKOFF_MS = 1_000;
  * import { AgentClient } from '@zerobase-labs/passport-sdk';
  *
  * const agent = new AgentClient({
- *   baseUrl: 'https://passport-api.onrender.com',
+ *   baseUrl: 'https://agent-passport.onrender.com',
  * });
  *
  * // Register a new agent

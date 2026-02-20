@@ -24,7 +24,7 @@ info:
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://passport-api.onrender.com
+  - url: https://agent-passport.onrender.com
     description: Production API (Render)
   - url: http://localhost:3000
     description: Local development

@@ -432,8 +432,8 @@ Track these during launch week:
 ## 📌 Key Links to Include
 
 - GitHub: `github.com/zerobase-labs/agent-passport`
-- API: `https://passport-api.onrender.com`
-- Portal: `https://passport-portal.vercel.app`
+- API: `https://agent-passport.onrender.com`
+- Portal: `https://agent-passport.vercel.app`
 - Docs: `github.com/zerobase-labs/agent-passport/blob/main/docs/INTEGRATION.md`
 - OpenAPI: `github.com/zerobase-labs/agent-passport/blob/main/docs/openapi.yaml`
 

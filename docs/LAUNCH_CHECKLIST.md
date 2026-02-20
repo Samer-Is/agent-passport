@@ -28,7 +28,7 @@
 - [ ] Portal deployed to Vercel and loading
 - [ ] Database migrated (Prisma)
 - [ ] Redis connected (Upstash)
-- [ ] JWKS endpoint works: `curl https://passport-api.onrender.com/.well-known/jwks.json`
+- [ ] JWKS endpoint works: `curl https://agent-passport.onrender.com/.well-known/jwks.json`
 
 ## Launch
 - [ ] Hacker News "Show HN" post ready

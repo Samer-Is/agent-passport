@@ -24,7 +24,7 @@ yarn add @zerobase-labs/passport-sdk
 import { AgentPassportClient } from '@zerobase-labs/passport-sdk';
 
 const passport = new AgentPassportClient({
-  baseUrl: 'https://passport-api.onrender.com',
+  baseUrl: 'https://agent-passport.onrender.com',
   appId: 'your-app-id',
   appKey: 'ap_live_...',
 });
@@ -41,7 +41,7 @@ if (result.valid && result.risk?.recommendedAction === 'allow') {
 import { AgentClient } from '@zerobase-labs/passport-sdk';
 
 const agent = new AgentClient({
-  baseUrl: 'https://passport-api.onrender.com',
+  baseUrl: 'https://agent-passport.onrender.com',
 });
 
 // Register once

@@ -26,7 +26,7 @@ declare global {
 }
 
 const passport = new AgentPassportClient({
-  baseUrl: process.env.PASSPORT_URL ?? 'https://passport-api.onrender.com',
+  baseUrl: process.env.PASSPORT_URL ?? 'https://agent-passport.onrender.com',
   appId: process.env.PASSPORT_APP_ID!,
   appKey: process.env.PASSPORT_APP_KEY!,
 });

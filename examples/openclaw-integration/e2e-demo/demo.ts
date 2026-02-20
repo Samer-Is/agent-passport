@@ -24,7 +24,7 @@ import { AgentClient, AgentPassportClient } from '@zerobase-labs/passport-sdk';
 import * as ed from '@noble/ed25519';
 import express from 'express';
 
-const PASSPORT_URL = process.env.PASSPORT_URL ?? 'https://passport-api.onrender.com';
+const PASSPORT_URL = process.env.PASSPORT_URL ?? 'https://agent-passport.onrender.com';
 const APP_ID = process.env.PASSPORT_APP_ID;
 const APP_KEY = process.env.PASSPORT_APP_KEY;
 

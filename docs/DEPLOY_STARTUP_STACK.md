@@ -162,7 +162,7 @@ DATABASE_URL="your-neon-url" npx prisma migrate deploy
 
 | Variable | Value |
 |----------|-------|
-| `NEXT_PUBLIC_API_URL` | `https://passport-api.onrender.com` |
+| `NEXT_PUBLIC_API_URL` | `https://agent-passport.onrender.com` |
 | `SESSION_SECRET` | (generate random 32+ char string) |
 | `DATABASE_URL` | (same Neon URL) |
 
@@ -211,7 +211,7 @@ Go to **Settings** → **Secrets and variables** → **Actions** → **New repos
 ### Health Check
 
 ```bash
-curl https://passport-api.onrender.com/healthz
+curl https://agent-passport.onrender.com/healthz
 ```
 
 Expected:
@@ -222,7 +222,7 @@ Expected:
 ### JWKS Endpoint
 
 ```bash
-curl https://passport-api.onrender.com/.well-known/jwks.json
+curl https://agent-passport.onrender.com/.well-known/jwks.json
 ```
 
 Should return your public key.

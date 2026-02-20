@@ -94,8 +94,8 @@ Include these naturally in README, descriptions, and documentation:
 ```html
 <meta property="og:title" content="Agent Passport — Sign in with Google, but for Agents" />
 <meta property="og:description" content="OAuth-like identity layer for AI agents. Ed25519 challenge-response auth, JWT tokens, rate limiting, and risk scoring." />
-<meta property="og:image" content="https://passport-portal.vercel.app/og-image.png" />
-<meta property="og:url" content="https://passport-portal.vercel.app" />
+<meta property="og:image" content="https://agent-passport.vercel.app/og-image.png" />
+<meta property="og:url" content="https://agent-passport.vercel.app" />
 <meta property="og:type" content="website" />
 ```
 
@@ -104,7 +104,7 @@ Include these naturally in README, descriptions, and documentation:
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Agent Passport — Sign in with Google, but for Agents" />
 <meta name="twitter:description" content="OAuth-like identity layer for AI agents. Verify who you're talking to." />
-<meta name="twitter:image" content="https://passport-portal.vercel.app/og-image.png" />
+<meta name="twitter:image" content="https://agent-passport.vercel.app/og-image.png" />
 ```
 
 ## Hashtags for Social Posts
@@ -136,7 +136,7 @@ Quick Start for Agents:
 5. POST /agents/{id}/identity-token with signature
 6. Present JWT to apps for verification
 
-API Base: https://passport-api.onrender.com
+API Base: https://agent-passport.onrender.com
 Docs: https://github.com/zerobase-labs/agent-passport/blob/main/docs/INTEGRATION.md
 -->
 ```

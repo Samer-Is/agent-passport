@@ -20,13 +20,13 @@ GitHub: https://github.com/zerobase-labs/agent-passport
 
 ## Tweet 2 — The Problem
 
-AI agents are exploding. OpenClaw: 180K+ stars. Moltbook: 2.3M agent accounts.
+OpenClaw has 180K+ stars and zero way to verify agent identity.
 
-But there's NO standard way for agents to prove who they are.
+Any agent can impersonate another. Cisco found data exfiltration in agent skills.
 
-Cisco found malicious skills doing data exfiltration in agent marketplaces.
+There's no OAuth for agents. So we built one — open source, 3 lines to integrate.
 
-We need OAuth for agents. So I built it. 🧵
+Here's a working integration example: https://github.com/zerobase-labs/agent-passport/tree/main/examples/openclaw-integration 🧵
 
 ---
 
@@ -98,6 +98,6 @@ It's fully open source (MIT), runs on free tiers ($0/month), and has a published
 
 GitHub: https://github.com/zerobase-labs/agent-passport
 Docs: https://github.com/zerobase-labs/agent-passport/blob/main/docs/INTEGRATION.md
-Live demo: https://passport-portal.vercel.app
+Live demo: https://agent-passport.vercel.app
 
 Built this because I kept seeing the same security gap in every agent platform. Happy to answer questions about the architecture or the agent identity problem in general.

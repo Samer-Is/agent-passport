@@ -13,7 +13,7 @@ import { AgentClient } from '@zerobase-labs/passport-sdk';
 import * as ed from '@noble/ed25519';
 import { writeFileSync } from 'node:fs';
 
-const PASSPORT_URL = process.env.PASSPORT_URL ?? 'https://passport-api.onrender.com';
+const PASSPORT_URL = process.env.PASSPORT_URL ?? 'https://agent-passport.onrender.com';
 
 async function main() {
   console.log('🔑 Generating Ed25519 keypair...');

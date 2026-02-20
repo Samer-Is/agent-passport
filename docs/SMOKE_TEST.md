@@ -7,14 +7,14 @@
 - `curl` installed
 - `jq` installed (optional, for JSON formatting)
 - `openssl` or a Node.js script for Ed25519 signing
-- Deployed API at `https://passport-api.onrender.com` (or your URL)
+- Deployed API at `https://agent-passport.onrender.com` (or your URL)
 - An app ID and key from the Portal
 
 ## Environment Setup
 
 ```bash
 # Set your API base URL
-export AP_API="https://passport-api.onrender.com"
+export AP_API="https://agent-passport.onrender.com"
 
 # Set your app credentials (from Portal)
 export AP_APP_ID="your-app-id"
@@ -334,7 +334,7 @@ curl -s -w "\nHTTP Code: %{http_code}\n" -X POST "$AP_API/agents/$AGENT_ID/chall
 #!/bin/bash
 set -e
 
-AP_API="${AP_API:-https://passport-api.onrender.com}"
+AP_API="${AP_API:-https://agent-passport.onrender.com}"
 AP_APP_ID="${AP_APP_ID:-your-app-id}"
 AP_APP_KEY="${AP_APP_KEY:-your-app-key}"
 

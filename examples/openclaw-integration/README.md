@@ -93,7 +93,7 @@ Run everything in one script:
 ```bash
 cd ../e2e-demo
 npm install
-PASSPORT_URL=https://passport-api.onrender.com \
+PASSPORT_URL=https://agent-passport.onrender.com \
 PASSPORT_APP_ID=your-id \
 PASSPORT_APP_KEY=your-key \
 npx tsx demo.ts
@@ -140,7 +140,7 @@ The SDK handles all the cryptographic plumbing. Your integration is just:
 
 ```typescript
 // Agent side (3 lines)
-const agent = new AgentClient({ baseUrl: 'https://passport-api.onrender.com' });
+const agent = new AgentClient({ baseUrl: 'https://agent-passport.onrender.com' });
 const reg = await agent.register({ handle: 'my-agent', publicKeyB64 });
 const { token } = await agent.authenticate({ agentId: reg.agentId, sign: mySignFn });
 
