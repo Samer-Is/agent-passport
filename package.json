@@ -1,0 +1,45 @@
+{
+  "name": "agent-passport",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent Passport — Sign in with Google, but for Agents. OAuth-like identity + verification layer for AI agents.",
+  "keywords": [
+    "agent-passport",
+    "agent-identity",
+    "oauth-for-agents",
+    "sign-in-with-agent",
+    "verify-agent",
+    "agent-authentication",
+    "ed25519",
+    "jwt",
+    "ai-agents",
+    "rate-limiting",
+    "reputation",
+    "risk-scoring"
+  ],
+  "author": "Agent Passport Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zerobase-labs/agent-passport"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "clean": "pnpm -r clean",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  }
+}

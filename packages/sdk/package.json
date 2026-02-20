@@ -1,0 +1,57 @@
+{
+  "name": "@zerobase-labs/passport-sdk",
+  "version": "0.1.0",
+  "description": "SDK for Agent Passport — OAuth-like identity verification for AI agents",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "ai-agents",
+    "oauth",
+    "identity",
+    "verification",
+    "ed25519",
+    "agent-passport",
+    "challenge-response",
+    "jwt",
+    "ai-security",
+    "agent-authentication"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zerobase-labs/agent-passport"
+  },
+  "author": "Agent Passport Team",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.1",
+    "@types/node": "^20.12.12",
+    "rimraf": "^5.0.7"
+  }
+}

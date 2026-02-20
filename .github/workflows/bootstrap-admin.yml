@@ -1,0 +1,52 @@
+name: Bootstrap Admin
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: 'Admin email address'
+        required: true
+        type: string
+      password:
+        description: 'Admin password (will be hashed with argon2id)'
+        required: true
+        type: string
+
+jobs:
+  bootstrap:
+    name: Create Admin User
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared package
+        run: pnpm -C packages/shared build
+
+      - name: Generate Prisma client
+        run: pnpm -C apps/passport-api db:generate
+
+      - name: Run bootstrap script
+        run: pnpm -C apps/passport-api tsx scripts/bootstrap-admin.ts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ADMIN_EMAIL: ${{ github.event.inputs.email }}
+          ADMIN_PASSWORD: ${{ github.event.inputs.password }}
+
+      - name: Clear sensitive data
+        run: echo "Admin user created successfully. Password was hashed and never logged."

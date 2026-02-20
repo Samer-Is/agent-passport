@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "apps/passport-api" },
+    { "path": "apps/passport-portal" },
+    { "path": "packages/shared" }
+  ]
+}

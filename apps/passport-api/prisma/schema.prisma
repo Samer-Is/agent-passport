@@ -1,0 +1,220 @@
+// Agent Passport - Prisma Schema
+// Database: PostgreSQL (Neon)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// Agents - AI agents that authenticate via Ed25519 keys
+// ============================================================================
+
+model Agent {
+  id        String   @id @default(uuid()) @db.Uuid
+  handle    String   @unique
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  status    AgentStatus @default(active)
+
+  // Relations
+  keys               AgentKey[]
+  challenges         Challenge[]
+  verificationEvents VerificationEvent[]
+  riskState          RiskState?
+
+  @@map("agents")
+}
+
+enum AgentStatus {
+  active
+  suspended
+}
+
+// ============================================================================
+// Agent Keys - Ed25519 public keys for agent authentication
+// ============================================================================
+
+model AgentKey {
+  id           String    @id @default(uuid()) @db.Uuid
+  agentId      String    @map("agent_id") @db.Uuid
+  publicKeyB64 String    @map("public_key_b64")
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  revokedAt    DateTime? @map("revoked_at") @db.Timestamptz
+
+  // Relations
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@map("agent_keys")
+}
+
+// ============================================================================
+// Apps - Third-party applications that verify agent identities
+// ============================================================================
+
+model App {
+  id                  String    @id @default(uuid()) @db.Uuid
+  name                String
+  description         String?
+  allowedScopes       String[]  @default([]) @map("allowed_scopes")
+  allowedCallbackUrls String[]  @default([]) @map("allowed_callback_urls")
+  createdAt           DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  status              AppStatus @default(active)
+  portalUserId        String    @map("portal_user_id") @db.Uuid
+
+  // Relations
+  keys               AppKey[]
+  verificationEvents VerificationEvent[]
+  portalUser         PortalUser @relation(fields: [portalUserId], references: [id], onDelete: Cascade)
+
+  @@map("apps")
+}
+
+enum AppStatus {
+  active
+  suspended
+}
+
+// ============================================================================
+// App Keys - API keys for apps (stored as argon2id hashes)
+// ============================================================================
+
+model AppKey {
+  id         String       @id @default(uuid()) @db.Uuid
+  appId      String       @map("app_id") @db.Uuid
+  name       String?      // Optional friendly name for the key
+  keyPrefix  String       @map("key_prefix")
+  keyHash    String       @map("key_hash")
+  status     AppKeyStatus @default(active)
+  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  revokedAt  DateTime?    @map("revoked_at") @db.Timestamptz
+  lastUsedAt DateTime?    @map("last_used_at") @db.Timestamptz
+
+  // Relations
+  app App @relation(fields: [appId], references: [id], onDelete: Cascade)
+
+  @@map("app_keys")
+}
+
+enum AppKeyStatus {
+  active
+  revoked
+}
+
+// ============================================================================
+// Challenges - Nonce-based challenges for agent authentication
+// ============================================================================
+
+model Challenge {
+  id        String    @id @default(uuid()) @db.Uuid
+  agentId   String    @map("agent_id") @db.Uuid
+  nonce     String
+  expiresAt DateTime  @map("expires_at") @db.Timestamptz
+  usedAt    DateTime? @map("used_at") @db.Timestamptz
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+
+  // Relations
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@map("challenges")
+}
+
+// ============================================================================
+// Audit Events - Append-only log of all security-relevant events
+// ============================================================================
+
+model AuditEvent {
+  id        String   @id @default(uuid()) @db.Uuid
+  at        DateTime @default(now()) @db.Timestamptz
+  eventType String   @map("event_type")
+  actorType ActorType @map("actor_type")
+  actorId   String?  @map("actor_id")
+  ip        String?
+  metadata  Json     @default("{}")
+
+  @@map("audit_events")
+}
+
+enum ActorType {
+  agent
+  app
+  portal_user
+  system
+  ip
+}
+
+// ============================================================================
+// Verification Events - Log of identity verification attempts
+// ============================================================================
+
+model VerificationEvent {
+  id      String   @id @default(uuid()) @db.Uuid
+  at      DateTime @default(now()) @db.Timestamptz
+  appId   String   @map("app_id") @db.Uuid
+  agentId String?  @map("agent_id") @db.Uuid
+  result  String
+  reason  String
+  ip      String?
+
+  // Relations
+  app   App    @relation(fields: [appId], references: [id], onDelete: Cascade)
+  agent Agent? @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  @@map("verification_events")
+}
+
+// ============================================================================
+// Risk State - Cached risk scores for agents
+// ============================================================================
+
+model RiskState {
+  agentId           String      @id @map("agent_id") @db.Uuid
+  updatedAt         DateTime    @updatedAt @map("updated_at") @db.Timestamptz
+  score             Int         @db.SmallInt
+  recommendedAction RiskAction  @map("recommended_action")
+  reasons           Json        @default("[]")
+
+  // Relations
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@map("risk_state")
+}
+
+enum RiskAction {
+  allow
+  throttle
+  block
+}
+
+// ============================================================================
+// Portal Users - Admin users for the portal
+// ============================================================================
+
+model PortalUser {
+  id           String           @id @default(uuid()) @db.Uuid
+  email        String           @unique
+  passwordHash String           @map("password_hash")
+  displayName  String?          @map("display_name")
+  role         PortalRole       @default(viewer)
+  status       PortalUserStatus @default(active)
+  createdAt    DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  lastLoginAt  DateTime?        @map("last_login_at") @db.Timestamptz
+
+  // Relations
+  apps App[]
+
+  @@map("portal_users")
+}
+
+enum PortalRole {
+  admin
+  viewer
+}
+
+enum PortalUserStatus {
+  active
+  suspended
+}

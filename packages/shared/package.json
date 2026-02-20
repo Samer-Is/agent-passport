@@ -1,0 +1,49 @@
+{
+  "name": "@agent-passport/shared",
+  "version": "0.1.0",
+  "description": "Shared Zod schemas, TypeScript types, and client utilities for Agent Passport",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./schemas": {
+      "import": "./dist/schemas/index.js",
+      "require": "./dist/schemas/index.js",
+      "types": "./dist/schemas/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client/index.js",
+      "require": "./dist/client/index.js",
+      "types": "./dist/client/index.d.ts"
+    },
+    "./constants": {
+      "import": "./dist/constants/index.js",
+      "require": "./dist/constants/index.js",
+      "types": "./dist/constants/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
+    "rimraf": "^5.0.7",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  }
+}

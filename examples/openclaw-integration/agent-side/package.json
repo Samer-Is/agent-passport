@@ -1,0 +1,18 @@
+{
+  "name": "openclaw-agent-side",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "register": "tsx register-agent.ts",
+    "authenticate": "tsx authenticate-agent.ts"
+  },
+  "dependencies": {
+    "@zerobase-labs/passport-sdk": "workspace:*",
+    "@noble/ed25519": "^2.1.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.5"
+  }
+}
