@@ -45,3 +45,10 @@ apps/passport-api/prisma/*.db-journal
 
 # Misc
 .turbo/
+
+# Instruction/chunk files (local only)
+instructions.txt
+chunk*.txt
+chunk*.md
+CODEBASE_DOCUMENTATION.md
+NEXT_STEPS.md
