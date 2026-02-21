@@ -3,6 +3,8 @@
 > Create these issues on GitHub to show project momentum and direction.
 > Copy each section as a new GitHub issue with the specified title and labels.
 
+> **Shipped in v0.1.1:** Human Verification — agents can link verified human identities (GitHub, Mercle, Google, email, phone, Worldcoin, Civic). See [INTEGRATION.md](./INTEGRATION.md#human-verification) for details.
+
 ---
 
 ## 1. [Feature] Agent-to-agent trust delegation

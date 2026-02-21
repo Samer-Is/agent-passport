@@ -272,7 +272,67 @@ curl -s -X POST "$AP_API/tokens/verify" \
 
 ✅ **Pass if:** `valid: false` and `reason: "token_revoked"`
 
-## Test 10: Verify Expired/Invalid Token
+## Test 10: Human Verification — Check Status
+
+```bash
+curl -s "$AP_API/v1/agents/$AGENT_ID/human-verification" | jq
+```
+
+**Expected Response:**
+```json
+{
+  "verified": false,
+  "verifications": []
+}
+```
+
+✅ **Pass if:** Response contains `verified` (boolean) and `verifications` (array)
+
+## Test 11: Human Verification — Link Provider
+
+```bash
+curl -s -X POST "$AP_API/v1/agents/$AGENT_ID/human-verification" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{
+    "provider": "github",
+    "providerId": "12345",
+    "displayName": "smoke-test-user"
+  }' | jq
+```
+
+**Expected Response:**
+```json
+{
+  "id": "...",
+  "agentId": "...",
+  "provider": "github",
+  "displayName": "smoke-test-user",
+  "status": "active",
+  "verifiedAt": "..."
+}
+```
+
+✅ **Pass if:** Response contains `provider: "github"` and `status: "active"`
+
+## Test 12: Human Verification — Verify Status Updated
+
+```bash
+curl -s "$AP_API/v1/agents/$AGENT_ID/human-verification" | jq
+```
+
+✅ **Pass if:** `verified: true` and `verifications` has one entry with `provider: "github"`
+
+## Test 13: Human Verification — Revoke
+
+```bash
+curl -s -X DELETE "$AP_API/v1/agents/$AGENT_ID/human-verification/github" \
+  -H "Authorization: Bearer $TOKEN" | jq
+```
+
+✅ **Pass if:** Response contains `revoked: true`
+
+## Test 14: Verify Expired/Invalid Token
 
 ```bash
 curl -s -X POST "$AP_API/tokens/verify" \
@@ -292,7 +352,7 @@ curl -s -X POST "$AP_API/tokens/verify" \
 
 ✅ **Pass if:** `valid: false` and `reason` is present
 
-## Test 11: Invalid App Credentials
+## Test 15: Invalid App Credentials
 
 ```bash
 curl -s -X POST "$AP_API/tokens/verify" \
@@ -312,7 +372,7 @@ curl -s -X POST "$AP_API/tokens/verify" \
 
 ✅ **Pass if:** HTTP status is 401
 
-## Test 12: Rate Limiting
+## Test 16: Rate Limiting
 
 ```bash
 # Send 65 requests quickly to trigger rate limit
@@ -481,6 +541,16 @@ if echo "$VERIFY_REVOKED" | jq -e '.valid == false and .reason == "token_revoked
   echo "   ✅ Revoked token correctly rejected"
 else
   echo "   ❌ Revoked token not rejected: $VERIFY_REVOKED"
+  exit 1
+fi
+
+# Test 10: Human Verification — Check status
+echo "🔟 Human verification status..."
+HV_STATUS=$(curl -s "$AP_API/v1/agents/$AGENT_ID/human-verification")
+if echo "$HV_STATUS" | jq -e '.verified == false' > /dev/null; then
+  echo "   ✅ Human verification status: not verified (expected)"
+else
+  echo "   ❌ Human verification status unexpected: $HV_STATUS"
   exit 1
 fi
 

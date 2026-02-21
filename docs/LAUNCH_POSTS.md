@@ -38,6 +38,7 @@ How Agent Passport works:
 2. Authenticates via challenge-response (private key never leaves)
 3. Gets a JWT identity token (60 min TTL, revocable)
 4. Any app verifies with one API call
+5. Optional: link a verified human identity for full accountability
 
 Risk engine scores each agent 0-100. Allow, throttle, or block.
 
@@ -61,7 +62,8 @@ That's it. Your app now knows exactly which agent it's talking to.
 Agent Passport is:
 ✅ Open source (MIT)
 ✅ Free to run ($0/month on Neon + Upstash + Render)
-✅ TypeScript SDK on npm
+✅ TypeScript SDK on npm (v0.1.1)
+✅ Human verification (GitHub, Mercle, Google, Worldcoin, etc.)
 ✅ Full docs, OpenAPI spec, examples
 
 Star it, fork it, build with it.
@@ -92,6 +94,7 @@ Agent Passport solves this with:
 - Ed25519 challenge-response authentication (private keys never leave the agent)
 - JWT identity tokens (60-min TTL, revocable)
 - Risk engine that scores agents 0-100 (allow/throttle/block)
+- Human verification — agents can link verified human identities (GitHub, Mercle, etc.)
 - One-line verification for apps: `const result = await passport.verify(token)`
 
 It's fully open source (MIT), runs on free tiers ($0/month), and has a published npm SDK.

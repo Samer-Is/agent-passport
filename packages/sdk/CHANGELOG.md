@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 (2026-02-22)
+
+### Added
+- `HumanVerificationInfo` type for individual human verification records
+- `HumanVerificationSummary` type for human verification status summary
+- `humanVerification` optional field on `VerifyResult` — includes verified boolean and verifications array
+- Supported human verification providers: github, mercle, google, email, phone, worldcoin, civic
+
 ## 0.1.0 (2026-02-20)
 
 ### Added

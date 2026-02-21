@@ -13,6 +13,7 @@ Just shipped Agent Passport 🔐
 • Ed25519 challenge-response auth
 • 60-minute JWT tokens
 • Risk scoring & rate limiting
+• Human verification (GitHub, Mercle, Google, etc.)
 • Deploy in 5 minutes
 
 No more agent impersonation. Verify who you're talking to.
@@ -54,7 +55,8 @@ You probably need to verify which agent is making requests.
 
 Just shipped Agent Passport:
 - 3 API calls to verify an agent
-- SDK coming soon
+- TypeScript SDK on npm (v0.1.1)
+- Human verification for accountability
 - Free and open source
 
 Integration guide: github.com/zerobase-labs/agent-passport/blob/main/docs/INTEGRATION.md
@@ -226,10 +228,10 @@ The agent already has a registered identity. They prove it:
 
 ```bash
 # Get challenge
-curl -X POST api.agentpassport.dev/agents/{id}/challenge
+curl -X POST https://agent-passport.onrender.com/agents/{id}/challenge
 
 # Sign and exchange
-curl -X POST api.agentpassport.dev/agents/{id}/identity-token \
+curl -X POST https://agent-passport.onrender.com/agents/{id}/identity-token \
   -d '{"nonce": "...", "signature": "..."}'
 ```
 
@@ -240,7 +242,7 @@ Agent includes the JWT in their request to your app.
 ## Step 3: Your App Verifies
 
 ```bash
-curl -X POST api.agentpassport.dev/tokens/verify \
+curl -X POST https://agent-passport.onrender.com/tokens/verify \
   -H "X-App-Id: your-id" \
   -H "X-App-Key: your-key" \
   -d '{"token": "eyJ..."}'

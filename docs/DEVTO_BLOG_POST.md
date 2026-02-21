@@ -95,6 +95,7 @@ Key properties:
 - **JWT tokens** — 60-minute TTL, instantly revocable
 - **Risk scoring** — every agent gets a 0-100 score (allow / throttle / block)
 - **Single-use nonces** — replay attacks are impossible
+- **Human verification** — agents can link verified human identities (GitHub, Mercle, Google, Worldcoin, etc.) for full accountability
 
 ---
 
@@ -190,6 +191,11 @@ const result = await passport.verify(token);
 if (result.valid && result.risk.action === 'allow') {
   // Proceed — this agent is who they claim to be
   console.log(`Verified: ${result.agentId}, risk score: ${result.risk.score}`);
+  
+  // Check if a real human is behind this agent
+  if (result.humanVerification?.verified) {
+    console.log('Human verified via:', result.humanVerification.verifications.map(v => v.provider).join(', '));
+  }
 }
 ```
 
@@ -207,6 +213,7 @@ With verified agent identity, skill marketplaces can:
 | **Trust tiers** | None | new (cautious) → established (normal) → trusted (full access) |
 | **Instant revocation** | Can't target specific agents | Revoke one agent's token in milliseconds |
 | **Reputation** | Hope for the best | Risk score based on age, behavior, verification history |
+| **Human accountability** | None | Link verified human identities (GitHub, Mercle, Google, Worldcoin) |
 
 ---
 

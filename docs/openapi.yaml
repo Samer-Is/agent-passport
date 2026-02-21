@@ -38,6 +38,8 @@ tags:
     description: Token verification for app builders
   - name: JWKS
     description: JSON Web Key Set for token verification
+  - name: Human Verification
+    description: Link and manage verified human identities for agents
 
 paths:
   /healthz:
@@ -362,6 +364,126 @@ paths:
                     use: sig
                     alg: EdDSA
 
+  /agents/{agentId}/human-verification:
+    post:
+      tags:
+        - Human Verification
+      summary: Link a human verification to an agent
+      description: |
+        Link a verified human identity (e.g., GitHub, Google, Mercle) to an agent.
+        This proves a real human is accountable for the agent's actions.
+        
+        **Requires Agent Authentication:** Include the agent's JWT in the `Authorization` header.
+        
+        If a verification for the same provider already exists, it will be updated (upsert).
+      operationId: linkHumanVerification
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinkHumanVerificationRequest'
+            example:
+              provider: github
+              providerId: "12345"
+              displayName: "octocat"
+              metadata:
+                profileUrl: "https://github.com/octocat"
+      responses:
+        '200':
+          description: Human verification linked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanVerificationResponse'
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid or missing agent token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - Human Verification
+      summary: Check agent's human verification status
+      description: |
+        Returns the human verification status for an agent.
+        This endpoint is public — no authentication required.
+      operationId: getHumanVerification
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+      responses:
+        '200':
+          description: Human verification status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanVerificationSummary'
+              example:
+                verified: true
+                verifications:
+                  - provider: github
+                    displayName: "octocat"
+                    verifiedAt: "2026-02-22T10:00:00.000Z"
+                    status: active
+
+  /agents/{agentId}/human-verification/{provider}:
+    delete:
+      tags:
+        - Human Verification
+      summary: Revoke a human verification
+      description: |
+        Revoke a specific human verification provider from an agent.
+        
+        **Requires Agent Authentication:** Include the agent's JWT in the `Authorization` header.
+      operationId: revokeHumanVerification
+      parameters:
+        - $ref: '#/components/parameters/AgentId'
+        - name: provider
+          in: path
+          required: true
+          description: The verification provider to revoke
+          schema:
+            type: string
+            enum: [github, mercle, google, email, phone, worldcoin, civic]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Verification revoked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  revoked:
+                    type: boolean
+                    enum: [true]
+                  provider:
+                    type: string
+        '401':
+          description: Invalid or missing agent token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Verification not found for this provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
   securitySchemes:
     appAuth:
@@ -372,6 +494,11 @@ components:
         App authentication requires two headers:
         - `X-App-Id`: Your app's ID
         - `X-App-Key`: Your app's secret key (plaintext)
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Agent JWT token from the identity-token endpoint
 
   parameters:
     AgentId:
@@ -550,6 +677,94 @@ components:
           description: Token expiration (Unix timestamp)
         risk:
           $ref: '#/components/schemas/RiskAssessment'
+        humanVerification:
+          $ref: '#/components/schemas/HumanVerificationSummary'
+
+    HumanVerificationProvider:
+      type: string
+      enum: [github, mercle, google, email, phone, worldcoin, civic]
+
+    LinkHumanVerificationRequest:
+      type: object
+      required:
+        - provider
+        - providerId
+        - displayName
+      properties:
+        provider:
+          $ref: '#/components/schemas/HumanVerificationProvider'
+        providerId:
+          type: string
+          description: The user's ID from the provider
+        displayName:
+          type: string
+          description: Human-readable display name
+        expiresAt:
+          type: string
+          format: date-time
+          description: Optional expiration date
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Optional provider-specific metadata
+
+    HumanVerificationResponse:
+      type: object
+      required:
+        - id
+        - agentId
+        - provider
+        - displayName
+        - status
+        - verifiedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        agentId:
+          type: string
+          format: uuid
+        provider:
+          $ref: '#/components/schemas/HumanVerificationProvider'
+        providerId:
+          type: string
+        displayName:
+          type: string
+        status:
+          type: string
+          enum: [active, expired, revoked]
+        verifiedAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+
+    HumanVerificationSummary:
+      type: object
+      required:
+        - verified
+        - verifications
+      properties:
+        verified:
+          type: boolean
+          description: Whether the agent has at least one active human verification
+        verifications:
+          type: array
+          items:
+            type: object
+            properties:
+              provider:
+                $ref: '#/components/schemas/HumanVerificationProvider'
+              displayName:
+                type: string
+              verifiedAt:
+                type: string
+                format: date-time
+              status:
+                type: string
+                enum: [active, expired, revoked]
 
     RiskAssessment:
       type: object

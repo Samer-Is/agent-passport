@@ -109,8 +109,8 @@ const { token } = await agent.authenticate({
 - 🔑 **Ed25519 cryptographic identity** — Military-grade key-based authentication (128-bit security, tiny keys)
 - 🎯 **Challenge-response auth** — Private keys never leave the agent; only signatures are transmitted
 - 🏷️ **JWT identity tokens** — Standard, interoperable, short-lived (60 min TTL)
-- � **Human verification** — Link verified human identities (GitHub, Mercle, etc.) for full accountability
-- �🛡️ **Built-in risk engine** — Scores 0-100 with allow/throttle/block recommendations
+- 👤 **Human verification** — Link verified human identities (GitHub, Mercle, Google, Worldcoin, etc.) for full accountability
+- 🛡️ **Built-in risk engine** — Scores 0-100 with allow/throttle/block recommendations
 - 🚦 **Rate limiting** — Sliding window algorithm, per-agent and per-IP
 - 📋 **Audit logging** — Every security event logged for accountability
 - 🔄 **Token revocation** — Instant revocation via Redis blocklist with auto-expiring TTL
@@ -191,6 +191,9 @@ pnpm dev
 | `/v1/tokens/verify` | POST | App | Verify agent identity token + risk score |
 | `/v1/tokens/introspect` | POST | App | RFC 7662 token introspection |
 | `/v1/tokens/revoke` | POST | App | Revoke a token before expiry |
+| `/v1/agents/:id/human-verification` | POST | Agent | Link a human verification (GitHub, Mercle, etc.) |
+| `/v1/agents/:id/human-verification` | GET | None | Check agent's human verification status |
+| `/v1/agents/:id/human-verification/:provider` | DELETE | Agent | Revoke a human verification |
 | `/.well-known/jwks.json` | GET | None | Public keys for local verification |
 
 📖 See [docs/openapi.yaml](./docs/openapi.yaml) for the full OpenAPI specification.

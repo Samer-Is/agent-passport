@@ -78,7 +78,7 @@ new AgentPassportClient({
 
 | Method | Description |
 |--------|-------------|
-| `verify(token)` | Verify an agent's identity token |
+| `verify(token)` | Verify an agent's identity token (includes human verification status) |
 | `introspect(token)` | Introspect a token (RFC 7662) |
 | `revoke(token)` | Revoke a token before expiry |
 
@@ -126,6 +126,43 @@ try {
 ```
 
 The SDK automatically retries 429 responses with exponential backoff (configurable via `maxRetries`).
+
+## Human Verification
+
+The `verify()` response includes human verification status when an agent has linked a verified identity:
+
+```typescript
+const result = await passport.verify(token);
+
+if (result.valid) {
+  console.log('Agent:', result.agentId);
+  console.log('Human verified:', result.humanVerification?.verified);
+  
+  if (result.humanVerification?.verified) {
+    for (const v of result.humanVerification.verifications) {
+      console.log(`  ${v.provider}: ${v.displayName} (since ${v.verifiedAt})`);
+    }
+  }
+}
+```
+
+### Types
+
+```typescript
+import type {
+  HumanVerificationInfo,
+  HumanVerificationSummary,
+  VerifyResult,
+} from '@zerobase-labs/passport-sdk';
+```
+
+| Type | Description |
+|------|-------------|
+| `HumanVerificationInfo` | Individual verification: provider, displayName, verifiedAt, status |
+| `HumanVerificationSummary` | Summary: verified (boolean) + verifications array |
+| `VerifyResult` | Full verify response including optional `humanVerification` field |
+
+Supported providers: `github`, `mercle`, `google`, `email`, `phone`, `worldcoin`, `civic`.
 
 ## Compatibility
 
