@@ -1,6 +1,6 @@
 {
   "name": "@zerobase-labs/passport-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "SDK for Agent Passport — OAuth-like identity verification for AI agents",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
