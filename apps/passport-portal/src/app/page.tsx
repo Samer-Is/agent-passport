@@ -23,12 +23,14 @@ export default function Home() {
           >
             Dashboard
           </Link>
-          <Link
-            href="/docs"
+          <a
+            href="https://github.com/zerobase-labs/agent-passport/blob/main/docs/INTEGRATION.md"
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
             Documentation
-          </Link>
+          </a>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
