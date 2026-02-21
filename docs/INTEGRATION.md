@@ -328,6 +328,107 @@ Rate limit headers are included in responses:
 - Challenges expire in 5 minutes — prevents replay attacks
 - Tokens expire in 60 minutes — limits exposure window
 
+## Human Verification
+
+Agent Passport supports linking verified human identities to agents, creating a full accountability chain:
+
+```
+Human (verified) → Agent Passport → Agent = full accountability
+```
+
+### Supported Providers
+
+| Provider | Description |
+|----------|------------|
+| `github` | GitHub OAuth identity |
+| `mercle` | Mercle decentralized identity |
+| `google` | Google OAuth identity |
+| `email` | Email verification |
+| `phone` | Phone number verification |
+| `worldcoin` | Worldcoin proof-of-personhood |
+| `civic` | Civic identity verification |
+
+### Link a Human Verification
+
+Agents can link their verified human identity (requires agent identity token):
+
+```bash
+curl -X POST https://agent-passport.onrender.com/v1/agents/{agentId}/human-verification \
+  -H "Authorization: Bearer {agent-identity-token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider": "github",
+    "providerId": "12345",
+    "displayName": "Jane Developer"
+  }'
+```
+
+### Check Human Verification Status
+
+Anyone can check if an agent has a verified human behind it (public endpoint):
+
+```bash
+curl https://agent-passport.onrender.com/v1/agents/{agentId}/human-verification
+```
+
+Response:
+```json
+{
+  "verified": true,
+  "verifications": [
+    {
+      "id": "...",
+      "provider": "github",
+      "providerId": "12345",
+      "displayName": "Jane Developer",
+      "verifiedAt": "2025-02-21T...",
+      "expiresAt": null,
+      "status": "active"
+    }
+  ]
+}
+```
+
+### Human Verification in Token Verification
+
+When apps verify an agent's token, the response now includes human verification info:
+
+```json
+{
+  "valid": true,
+  "agent": { "id": "...", "handle": "my-agent" },
+  "scopes": [],
+  "risk": { "score": 0, "recommendedAction": "allow", "reasons": [] },
+  "humanVerification": {
+    "verified": true,
+    "verifications": [
+      {
+        "provider": "github",
+        "displayName": "Jane Developer",
+        "verifiedAt": "2025-02-21T..."
+      }
+    ]
+  }
+}
+```
+
+Apps can use this to make trust decisions:
+
+```typescript
+const result = await passport.verify(token);
+if (result.valid && result.humanVerification?.verified) {
+  // Agent has a verified human ✓ — full accountability chain intact
+  console.log(`Verified by: ${result.humanVerification.verifications[0].displayName}`);
+}
+```
+
+### Revoke a Human Verification
+
+```bash
+curl -X DELETE https://agent-passport.onrender.com/v1/agents/{agentId}/human-verification/github \
+  -H "Authorization: Bearer {agent-identity-token}"
+```
+
 ## Support
 
 - [OpenAPI Specification](./openapi.yaml)

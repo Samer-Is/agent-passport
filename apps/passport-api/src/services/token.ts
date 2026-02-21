@@ -15,6 +15,7 @@ import {
   recordActivity,
   RiskAssessment,
 } from './risk-engine.js';
+import { getHumanVerifications, HumanVerificationSummary } from './human-verification.js';
 
 export interface TokenVerifyResult {
   valid: boolean;
@@ -24,6 +25,7 @@ export interface TokenVerifyResult {
   expiresAt?: Date;
   reason?: string;
   risk?: RiskAssessment;
+  humanVerification?: HumanVerificationSummary;
 }
 
 export interface TokenIntrospectResult {
@@ -118,6 +120,15 @@ export async function verifyToken(
     // Record valid attempt
     await recordValidAttempt(agentId);
     
+    // Fetch human verification status
+    let humanVerification: HumanVerificationSummary | undefined;
+    try {
+      humanVerification = await getHumanVerifications(agentId);
+    } catch (err: unknown) {
+      console.warn('Failed to fetch human verification:', err);
+      // Graceful degradation — omit human verification info if it fails
+    }
+
     // Token is valid
     await logVerificationEvent(appId, agentId, 'valid', 'ok', ip);
 
@@ -128,6 +139,7 @@ export async function verifyToken(
       scopes: payload.scopes as string[] | undefined,
       expiresAt: payload.exp ? new Date(payload.exp * 1000) : undefined,
       risk,
+      humanVerification,
     };
   } catch (error) {
     console.error('Token verification error:', error);

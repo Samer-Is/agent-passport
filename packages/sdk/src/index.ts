@@ -24,6 +24,8 @@ export type {
   RevokeResult,
   RiskAction,
   RiskAssessment,
+  HumanVerificationInfo,
+  HumanVerificationSummary,
   RegisterAgentParams,
   RegisterAgentResult,
   ChallengeResult,

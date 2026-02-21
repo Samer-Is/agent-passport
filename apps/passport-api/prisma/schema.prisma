@@ -21,10 +21,11 @@ model Agent {
   status    AgentStatus @default(active)
 
   // Relations
-  keys               AgentKey[]
-  challenges         Challenge[]
-  verificationEvents VerificationEvent[]
-  riskState          RiskState?
+  keys                AgentKey[]
+  challenges          Challenge[]
+  verificationEvents  VerificationEvent[]
+  riskState           RiskState?
+  humanVerifications  HumanVerification[]
 
   @@map("agents")
 }
@@ -217,4 +218,32 @@ enum PortalRole {
 enum PortalUserStatus {
   active
   suspended
+}
+
+// ============================================================================
+// Human Verifications - Link agents to verified human identities
+// ============================================================================
+
+model HumanVerification {
+  id          String                  @id @default(uuid()) @db.Uuid
+  agentId     String                  @map("agent_id") @db.Uuid
+  provider    String                  // e.g. "github", "mercle", "email", "google"
+  providerId  String                  @map("provider_id") // External user ID from the provider
+  displayName String?                 @map("display_name")
+  verifiedAt  DateTime                @default(now()) @map("verified_at") @db.Timestamptz
+  expiresAt   DateTime?               @map("expires_at") @db.Timestamptz
+  status      HumanVerificationStatus @default(active)
+  metadata    Json                    @default("{}")
+
+  // Relations
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([agentId, provider])
+  @@map("human_verifications")
+}
+
+enum HumanVerificationStatus {
+  active
+  expired
+  revoked
 }

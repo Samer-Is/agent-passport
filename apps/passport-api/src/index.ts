@@ -7,6 +7,7 @@ import { agentRoutes } from './routes/agents.js';
 import { adminRoutes, authRoutes } from './routes/admin.js';
 import { tokenRoutes } from './routes/tokens.js';
 import { wellKnownRoutes } from './routes/well-known.js';
+import { humanVerificationRoutes } from './routes/human-verification.js';
 import { requestIdPlugin } from './plugins/request-id.js';
 import { errorHandler } from './plugins/error-handler.js';
 import { loggerConfig } from './config/logger.js';
@@ -38,6 +39,7 @@ async function bootstrap() {
   await app.register(healthRoutes);
   await app.register(wellKnownRoutes); // JWKS and OpenID discovery
   await app.register(agentRoutes, { prefix: '/v1/agents' });
+  await app.register(humanVerificationRoutes, { prefix: '/v1/agents/:agentId/human-verification' });
   await app.register(adminRoutes, { prefix: '/v1/admin' });
   await app.register(authRoutes, { prefix: '/v1/auth' });
   await app.register(tokenRoutes, { prefix: '/v1/tokens' });

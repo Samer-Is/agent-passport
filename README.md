@@ -59,6 +59,7 @@ AI agents are everywhere — but there's no standard way to verify who they are.
 1. **Agent registers** with an Ed25519 public key (private key never leaves the agent)
 2. **Agent authenticates** via challenge-response — signs a random nonce, receives a short-lived JWT (60 min TTL, revocable)
 3. **Apps verify** the agent's identity with one API call and get a risk score
+4. **Human verification** (optional) — agents can link verified human identities (GitHub, Mercle, etc.) for full accountability
 
 ## Quick Start — For Apps (Verify Agents)
 
@@ -108,7 +109,8 @@ const { token } = await agent.authenticate({
 - 🔑 **Ed25519 cryptographic identity** — Military-grade key-based authentication (128-bit security, tiny keys)
 - 🎯 **Challenge-response auth** — Private keys never leave the agent; only signatures are transmitted
 - 🏷️ **JWT identity tokens** — Standard, interoperable, short-lived (60 min TTL)
-- 🛡️ **Built-in risk engine** — Scores 0-100 with allow/throttle/block recommendations
+- � **Human verification** — Link verified human identities (GitHub, Mercle, etc.) for full accountability
+- �🛡️ **Built-in risk engine** — Scores 0-100 with allow/throttle/block recommendations
 - 🚦 **Rate limiting** — Sliding window algorithm, per-agent and per-IP
 - 📋 **Audit logging** — Every security event logged for accountability
 - 🔄 **Token revocation** — Instant revocation via Redis blocklist with auto-expiring TTL

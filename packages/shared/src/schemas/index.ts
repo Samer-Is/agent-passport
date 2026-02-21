@@ -66,6 +66,43 @@ export const agentStatusSchema = z.enum(['active', 'suspended']);
 
 export const riskActionSchema = z.enum(['allow', 'throttle', 'block']);
 
+// ============================================================================
+// Human Verification Schemas
+// ============================================================================
+
+export const humanVerificationProviderSchema = z.enum([
+  'github',
+  'mercle',
+  'google',
+  'email',
+  'phone',
+  'worldcoin',
+  'civic',
+]);
+
+export const linkHumanVerificationRequestSchema = z.object({
+  provider: humanVerificationProviderSchema,
+  providerId: z.string().min(1).max(255),
+  displayName: z.string().max(255).optional(),
+  expiresAt: z.string().datetime().optional(),
+  metadata: z.record(z.unknown()).optional(),
+});
+
+export const humanVerificationInfoSchema = z.object({
+  id: z.string().uuid(),
+  provider: z.string(),
+  providerId: z.string(),
+  displayName: z.string().nullable(),
+  verifiedAt: z.string().datetime(),
+  expiresAt: z.string().datetime().nullable(),
+  status: z.enum(['active', 'expired', 'revoked']),
+});
+
+export const humanVerificationSummarySchema = z.object({
+  verified: z.boolean(),
+  verifications: z.array(humanVerificationInfoSchema),
+});
+
 export const verifyIdentityResponseSchema = z.object({
   valid: z.boolean(),
   agent: z
@@ -91,6 +128,7 @@ export const verifyIdentityResponseSchema = z.object({
       reasons: z.array(z.string()),
     })
     .optional(),
+  humanVerification: humanVerificationSummarySchema.optional(),
 });
 
 // ============================================================================
@@ -196,3 +234,7 @@ export type UsageResponse = z.infer<typeof usageResponseSchema>;
 export type RevokeTokenRequest = z.infer<typeof revokeTokenRequestSchema>;
 export type RevokeTokenResponse = z.infer<typeof revokeTokenResponseSchema>;
 export type ErrorResponse = z.infer<typeof errorResponseSchema>;
+export type LinkHumanVerificationRequest = z.infer<typeof linkHumanVerificationRequestSchema>;
+export type HumanVerificationInfo = z.infer<typeof humanVerificationInfoSchema>;
+export type HumanVerificationSummary = z.infer<typeof humanVerificationSummarySchema>;
+export type HumanVerificationProvider = z.infer<typeof humanVerificationProviderSchema>;

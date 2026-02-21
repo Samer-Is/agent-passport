@@ -21,6 +21,33 @@ export interface RiskAssessment {
 }
 
 // ---------------------------------------------------------------------------
+// Human Verification
+// ---------------------------------------------------------------------------
+
+export interface HumanVerificationInfo {
+  id: string;
+  /** Provider name (e.g. "github", "mercle", "email") */
+  provider: string;
+  /** User ID from the external provider */
+  providerId: string;
+  /** Human-readable display name (optional) */
+  displayName: string | null;
+  /** When the verification was created */
+  verifiedAt: string;
+  /** When the verification expires (null = never) */
+  expiresAt: string | null;
+  /** Current status: "active", "expired", or "revoked" */
+  status: string;
+}
+
+export interface HumanVerificationSummary {
+  /** True if the agent has at least one active human verification */
+  verified: boolean;
+  /** List of active human verifications */
+  verifications: HumanVerificationInfo[];
+}
+
+// ---------------------------------------------------------------------------
 // Verification (App-side)
 // ---------------------------------------------------------------------------
 
@@ -38,6 +65,8 @@ export interface VerifyResult {
   reason?: string;
   /** Risk assessment (may be absent if risk engine unavailable) */
   risk?: RiskAssessment;
+  /** Human verification status (present when valid === true) */
+  humanVerification?: HumanVerificationSummary;
 }
 
 export interface IntrospectResult {

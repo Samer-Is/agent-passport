@@ -69,6 +69,7 @@ export async function tokenRoutes(fastify: FastifyInstance) {
       scopes: result.scopes,
       expiresAt: result.expiresAt?.toISOString(),
       risk: result.risk,
+      humanVerification: result.humanVerification,
     });
   });
 

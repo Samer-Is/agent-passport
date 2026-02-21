@@ -121,6 +121,8 @@ export const AuditEventType = {
   VERIFICATION_SUCCESS: 'verification_success',
   VERIFICATION_FAILED: 'verification_failed',
   TOKEN_REVOKED: 'token_revoked',
+  HUMAN_VERIFICATION_LINKED: 'human_verification_linked',
+  HUMAN_VERIFICATION_REVOKED: 'human_verification_revoked',
 } as const;
 
 export type AuditEventTypeValue = (typeof AuditEventType)[keyof typeof AuditEventType];
